@@ -1,0 +1,81 @@
+import java.util.Scanner;
+
+public class ATMInterface {
+    static class User {
+        private double balance;
+        public User(double initialbalance) {
+            this.balance = initialbalance;
+        }
+        public double getBalance() {
+            return balance;
+        }
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+                System.out.println("operation successful updated balance: " + balance);
+            } else {
+                System.out.println("error amount entered!");
+            }
+        }
+        public boolean withdraw(double amount) {
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                System.out.println("operation successful updated balance:  " + balance);
+                return true;
+            } else {
+                System.out.println("error amount entered! you lack sufficient funds");
+                return false;
+            }
+        }
+        public void checkBalance() {
+            System.out.println("Your current balance is: " + balance);
+        }
+    }
+    static class ATM {
+        private User user;
+        public ATM(User user) {
+            this.user = user;
+        }
+        public void displayMenu() {
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                System.out.println("\nATM Menu:");
+                System.out.println("1. Check Balance");
+                System.out.println("2. Deposit");
+                System.out.println("3. Withdraw");
+                System.out.println("4. Exit");
+                System.out.print("choose and option to countinue: ");
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        user.checkBalance();
+                        break;
+                    case 2:
+                        System.out.print("Enter the amount to deposit: ");
+                        double depositAmount = scanner.nextDouble();
+                        user.deposit(depositAmount);
+                        break;
+                    case 3:
+                        System.out.print("Enter the amount to withdraw: ");
+                        double withdrawAmount = scanner.nextDouble();
+                        user.withdraw(withdrawAmount);
+                        break;
+                    case 4:
+                        System.out.println("enjoy your transactions.");
+                        scanner.close();
+                        return;
+                    default:
+                        System.out.println("error value entered!");
+                }
+            }
+        }
+    }
+    public static void main(String[] args) {
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Enter initial balance");
+        double i = myObj.nextDouble();
+        User user = new User(i); 
+        ATM atm = new ATM(user);
+        atm.displayMenu();
+    }
+}
